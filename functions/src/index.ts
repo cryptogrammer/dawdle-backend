@@ -28,8 +28,8 @@ const MODEL = "gpt-realtime-2025-08-28"; // your realtime model
 export const mintRealtimeSession = onCall(
   {region: "us-central1", secrets: [OPENAI_API_KEY_DAWDLE_VOICE], cors: true},
   async (req) => {
-  //   // Enforce Firebase Auth + App Check for production
-  //   if (!req.auth) throw new Error("UNAUTHENTICATED");
+    // Enforce Firebase Auth + App Check for production
+    if (!req.auth) throw new Error("UNAUTHENTICATED");
     if (!req.app) throw new Error("APP_CHECK_REQUIRED");
 
     // Build your default session config (voice, system prompt, tools, etc.)
