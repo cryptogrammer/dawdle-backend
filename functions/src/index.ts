@@ -32,22 +32,6 @@ export const mintRealtimeSession = onCall(
   //   if (!req.auth) throw new Error("UNAUTHENTICATED");
     if (!req.app) throw new Error("APP_CHECK_REQUIRED");
 
-  //   // Optional: per-user guardrails (rate limits, entitlements, etc.)
-  //   const uid = req.auth.uid;
-  //   await admin.firestore().runTransaction(async (tx) => {
-  //     const ref = admin.firestore().collection("rtLimits").doc(uid);
-  //     const now = Date.now(); const WINDOW_MS = 60_000; const CAP = 10;
-  //     const snap = await tx.get(ref);
-  //     const data = snap.exists ? snap.data() || {count: 0, windowStart: now} :
-  //       {count: 0, windowStart: now};
-  //     if (now - data.windowStart > WINDOW_MS) {
-  //       data.count = 0; data.windowStart = now;
-  //     }
-  //     if (data.count >= CAP) throw new Error("RATE_LIMIT");
-  //     data.count += 1;
-  //     tx.set(ref, data);
-  //   });
-
     // Build your default session config (voice, system prompt, tools, etc.)
     const sessionConfig = {
       model: MODEL,
