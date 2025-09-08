@@ -28,25 +28,25 @@ const MODEL = "gpt-realtime-2025-08-28"; // your realtime model
 export const mintRealtimeSession = onCall(
   {region: "us-central1", secrets: [OPENAI_API_KEY_DAWDLE_VOICE], cors: true},
   async (req) => {
-    // Enforce Firebase Auth + App Check for production
-    if (!req.auth) throw new Error("UNAUTHENTICATED");
+  //   // Enforce Firebase Auth + App Check for production
+  //   if (!req.auth) throw new Error("UNAUTHENTICATED");
     if (!req.app) throw new Error("APP_CHECK_REQUIRED");
 
-    // Optional: per-user guardrails (rate limits, entitlements, etc.)
-    const uid = req.auth.uid;
-    await admin.firestore().runTransaction(async (tx) => {
-      const ref = admin.firestore().collection("rtLimits").doc(uid);
-      const now = Date.now(); const WINDOW_MS = 60_000; const CAP = 10;
-      const snap = await tx.get(ref);
-      const data = snap.exists ? snap.data() || {count: 0, windowStart: now} :
-        {count: 0, windowStart: now};
-      if (now - data.windowStart > WINDOW_MS) {
-        data.count = 0; data.windowStart = now;
-      }
-      if (data.count >= CAP) throw new Error("RATE_LIMIT");
-      data.count += 1;
-      tx.set(ref, data);
-    });
+  //   // Optional: per-user guardrails (rate limits, entitlements, etc.)
+  //   const uid = req.auth.uid;
+  //   await admin.firestore().runTransaction(async (tx) => {
+  //     const ref = admin.firestore().collection("rtLimits").doc(uid);
+  //     const now = Date.now(); const WINDOW_MS = 60_000; const CAP = 10;
+  //     const snap = await tx.get(ref);
+  //     const data = snap.exists ? snap.data() || {count: 0, windowStart: now} :
+  //       {count: 0, windowStart: now};
+  //     if (now - data.windowStart > WINDOW_MS) {
+  //       data.count = 0; data.windowStart = now;
+  //     }
+  //     if (data.count >= CAP) throw new Error("RATE_LIMIT");
+  //     data.count += 1;
+  //     tx.set(ref, data);
+  //   });
 
     // Build your default session config (voice, system prompt, tools, etc.)
     const sessionConfig = {
@@ -81,7 +81,7 @@ export const mintRealtimeSession = onCall(
     // Do NOT return your real API key.
     return {
       session: {
-        id: json.id,
+        // id: json.id,
         // Ephemeral credential used by the client to authenticate WebRTC
         // with OpenAI:
         client_secret: json?.client_secret?.value,
