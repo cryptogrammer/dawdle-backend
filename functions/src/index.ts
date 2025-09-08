@@ -51,12 +51,25 @@ export const mintRealtimeSession = onCall(
     // Build your default session config (voice, system prompt, tools, etc.)
     const sessionConfig = {
       model: MODEL,
-      // you can set a default voice here (e.g., "verse", "alloy",
-      // "marin", "cedar" depending on availability)
-      // voice: "marin",
-      // instructions: "You are Dawdle Voice, keep responses brief and
-      // helpful.",
-      // turn_detection, input_audio_format, tool config, etc. can also go here.
+      voice: "echo",
+      modalities: ["text", "audio"],
+      instructions: "You are a helpful AI assistant for the Dawdle productivity app. Be friendly, encouraging, and supportive. Help users stay focused and motivated.",
+      input_audio_format: "pcm16",
+      output_audio_format: "pcm16",
+      input_audio_transcription: {
+        enabled: true,
+        model: "whisper-1"
+      },
+      turn_detection: {
+        type: "server_vad",
+        threshold: 0.5,
+        prefix_padding_ms: 300,
+        silence_duration_ms: 500
+      },
+      tools: [],
+      tool_choice: "auto",
+      temperature: 0.8,
+      max_response_output_tokens: "inf"
     };
 
     // Create ephemeral session with your *server* key
@@ -87,7 +100,6 @@ export const mintRealtimeSession = onCall(
         client_secret: json?.client_secret?.value,
         // Optionally return voice/model to keep client config in sync:
         model: MODEL,
-        // voice: "marin",
         expires_at: json?.client_secret?.expires_at, // helpful for retries
       },
     };
